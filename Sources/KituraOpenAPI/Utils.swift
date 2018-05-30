@@ -42,7 +42,6 @@ internal struct Utils {
         Log.verbose("applicationPath=\(applicationPath)")
       } else {
         Log.error("Error finding .build directory")
-        return nil
       }
     } else {
       // We're in Bluemix, use the path the swift-buildpack saves libraries to
@@ -56,20 +55,18 @@ internal struct Utils {
       _ = fm.changeCurrentDirectoryPath(checkoutsPath)
     } else {
       Log.error("Error finding .build/checkouts directory")
-      return nil
     }
     
     do {
       let dirContents = try fm.contentsOfDirectory(atPath: fm.currentDirectoryPath)
       for dir in dirContents {
-        if dir.contains("Kitura-OpenAPI") {
+        if dir.contains("KituraOpenAPI") {
           Log.verbose("Found Kitura-OpenAPI package directory")
           _ = fm.changeCurrentDirectoryPath(dir)
         }
       }
     } catch {
       Log.error("Error obtaining contents of directory: \(fm.currentDirectoryPath), \(error).")
-      return nil
     }
 
     let packagePath = "\(fm.currentDirectoryPath)/Package.swift"
@@ -81,7 +78,7 @@ internal struct Utils {
         Log.verbose("Did not find Package.swift, might be running under Xcode")
         let fileName = NSString(string: #file)
         let installDirPrefixRange: NSRange
-        let installDir = fileName.range(of: "/Sources/Kitura-OpenAPI/Utils.swift", options: .backwards)
+        let installDir = fileName.range(of: "/Sources/KituraOpenAPI/Utils.swift", options: .backwards)
         if installDir.location != NSNotFound {
           installDirPrefixRange = NSRange(location: 0, length: installDir.location)
         } else {
