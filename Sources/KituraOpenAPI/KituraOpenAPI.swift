@@ -41,6 +41,7 @@ public class KituraOpenAPI {
 
             guard let json = router.swaggerJSON else {
                 Log.warning("Could not retrieve OpenAPI definition from router")
+                response.send("Could not generate OpenAPI definition")
                 return next()
             }
 
