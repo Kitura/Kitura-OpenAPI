@@ -43,12 +43,12 @@ import KituraOpenAPI
 
 ## Example
 
-Inside your application, add a call to `KituraOpenAPI.addEndpoints(on:with:)` during startup, passing through the Kitura `Router` that you want to host the OpenAPI endpoints on. The `with` parameter optionally allows you to configure where the endpoints are hosted.
+Inside your application, add a call to `KituraOpenAPI.addEndpoints(to:with:)` during startup, passing through the Kitura `Router` that you want to host the OpenAPI endpoints on. The `with` parameter optionally allows you to configure where the endpoints are hosted.
 
 For example:
 
 ```swift
-KituraOpenAPI.addEndpoints(on: router) // Use the default endpoints
+KituraOpenAPI.addEndpoints(to: router) // Use the default endpoints
 ```
 
 You can then visit `/openapi` in a web browser to view the generated OpenAPI definition, and `/openapi/ui` to view SwaggerUI.
@@ -57,7 +57,7 @@ If you wish, you can customize the endpoint paths:
 
 ```swift
 let config = KituraOpenAPIConfig(apiPath: "/swagger", swaggerUIPath: "/swagger/ui")
-KituraOpenAPI.addEndpoints(on: router, with: config)
+KituraOpenAPI.addEndpoints(to: router, with: config)
 ```
 
 ## More information
