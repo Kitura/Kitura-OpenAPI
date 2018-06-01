@@ -1,7 +1,7 @@
 import XCTest
 
-import Kitura_OpenAPITests
+import KituraOpenAPITests
 
 var tests = [XCTestCaseEntry]()
-tests += Kitura_OpenAPITests.allTests()
+tests += KituraOpenAPITests.allTests()
 XCTMain(tests)
