@@ -21,8 +21,8 @@ public struct KituraOpenAPIConfig {
     // Path to serve SwaggerUI from. If nil, do not serve.
     public let swaggerUIPath: String?
     
-    //Create KituraOpenAPIConfig
-    public init(apiPath: String? = nil, swaggerUIPath: String? = nil) {
+    // Create KituraOpenAPIConfig
+    public init(apiPath: String?, swaggerUIPath: String?) {
         self.apiPath = apiPath
         self.swaggerUIPath = swaggerUIPath
     }
