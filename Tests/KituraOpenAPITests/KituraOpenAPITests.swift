@@ -1,12 +1,115 @@
+/**
+ * Copyright IBM Corporation 2018
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ **/
+
 import XCTest
+import Kitura
 @testable import KituraOpenAPI
 
-final class KituraOpenAPITests: XCTestCase {
-    func testExample() {
-    }
+// To allow the openAPI generation to work, a codable route must be registered.
 
+// This handler is needed for the get codable route. 
+func getPearHandler(completion: (Pear?, RequestError?) -> Void ) -> Void {                                           
+    let pear = Pear(id: "1", name: "a pear")
+    completion(pear, nil)                                                                                             
+}                                                                                                                    
+                                                                                                                         
+final class KituraOpenAPITests: KituraTest {
 
     static var allTests = [
-        ("testExample", testExample),
+        ("testDefaultAPIPAth", testDefaultAPIPath),
+        ("testDefaultSwaggerUIPath", testDefaultSwaggerUIPath),
+        ("testCustomAPIPath", testCustomAPIPath),
+        ("testCustomSwaggerUIPath", testCustomSwaggerUIPath),
     ]
+
+    func testDefaultAPIPath() {
+        guard let sourcesDirectory = Utils.localSourceDirectory else {                                                   
+            XCTFail("Could not locate local source directory")
+            return
+        }                                                                                                                
+        let router = Router()
+        KituraOpenAPI.addEndpoints(to: router)
+
+        do {
+           if let indexLocation = URL(string: "file://" + sourcesDirectory + "/swaggerui/index.html") {
+               let text = try String(contentsOf: indexLocation, encoding: .utf8)
+               XCTAssertTrue(text.contains("url: \"/openapi\","), "openapi was not correctly substituted in index.html")
+           }
+        }
+        catch {XCTFail("Could not read index.html")}
+    }
+
+    func testDefaultSwaggerUIPath() {
+        let router = Router()
+        KituraOpenAPI.addEndpoints(to: router)
+
+        router.get("/me/pear", handler: getPearHandler)
+
+        performServerTest(router, sslOption: .httpOnly) { expectation in
+            self.performRequest("get", path: "/openapi/ui/", callback: { response in
+                if let response = response {
+                    if let wrappedhtml = try? response.readString() {
+                        if let html = wrappedhtml {
+                            XCTAssertTrue(html.contains("<title>Kitura Swagger UI</title>"), "Kitura swagger ui was not served.")
+                            XCTAssertTrue(html.contains("url: \"/openapi\","), "Kitura swagger ui data source is incorrect")
+                        }
+                    }
+                }
+                expectation.fulfill()
+            })
+        }
+    }
+
+    func testCustomAPIPath() {
+        guard let sourcesDirectory = Utils.localSourceDirectory else {                                                   
+            XCTFail("Could not locate local source directory")
+            return
+        }                                                                                                                
+        let router = Router()
+        let config = KituraOpenAPIConfig(apiPath: "cheese", swaggerUIPath: "toasty")
+        KituraOpenAPI.addEndpoints(to: router, with: config)
+
+        do {
+           if let indexLocation = URL(string: "file://" + sourcesDirectory + "/swaggerui/index.html") {
+               let text = try String(contentsOf: indexLocation, encoding: .utf8)
+               XCTAssertTrue(text.contains("url: \"/cheese\","), "openapi was not correctly substituted in index.html")
+           }
+        }
+        catch {XCTFail("Could not read index.html")}
+    }
+
+    func testCustomSwaggerUIPath() {
+        let router = Router()
+        let config = KituraOpenAPIConfig(apiPath: "cheese", swaggerUIPath: "toasty")
+        KituraOpenAPI.addEndpoints(to: router, with: config)
+
+        router.get("/me/pear", handler: getPearHandler)
+
+        performServerTest(router, sslOption: .httpOnly) { expectation in
+            self.performRequest("get", path: "/toasty/", callback: { response in
+                if let response = response {
+                    if let wrappedhtml = try? response.readString() {
+                        if let html = wrappedhtml {
+                            XCTAssertTrue(html.contains("<title>Kitura Swagger UI</title>"), "Kitura swagger ui was not served.")
+                            XCTAssertTrue(html.contains("url: \"/cheese\","), "Kitura swagger ui data source is incorrect")
+                        }
+                    }
+                }
+                expectation.fulfill()
+            })
+        }
+    }
 }
