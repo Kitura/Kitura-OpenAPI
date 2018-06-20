@@ -16,6 +16,9 @@
 
 import Kitura
 import LoggerAPI
+import Foundation
+import Stencil
+import PathKit
 
 public class KituraOpenAPI {
     public static var defaultConfig = KituraOpenAPIConfig(apiPath: "/openapi", swaggerUIPath: "/openapi/ui")
@@ -36,7 +39,12 @@ public class KituraOpenAPI {
             return
         }
 
-        router.get(path) {
+        var apipath = path
+        if apipath.hasPrefix("/") == false {
+            apipath = "/" + apipath
+        }
+
+        router.get(apipath) {
             request, response, next in
 
             guard let json = router.swaggerJSON else {
@@ -50,20 +58,60 @@ public class KituraOpenAPI {
             response.status(.OK)
             try response.send(json).end()
         }
+            
         Log.info("Registered OpenAPI definition on \(path)")
     }
 
     private static func addSwaggerUI(to router: Router, with config: KituraOpenAPIConfig) {
-        guard let path = config.swaggerUIPath else {
+        guard let uiPath = config.swaggerUIPath else {
             Log.verbose("No path for SwaggerUI")
             return
         }
+
+        guard let apiPath = config.apiPath else {
+            Log.verbose("No path for OpenAPI definition")
+            return
+        }
+
         guard let sourcesDirectory = Utils.localSourceDirectory else {
             Log.error("Could not locate local source directory")
             return
         }
 
-        router.all(path, middleware: StaticFileServer(path: sourcesDirectory + "/swaggerui"))
-        Log.info("Registered SwaggerUI on \(path)")
+        var aPath = apiPath 
+        if aPath.hasPrefix("/") == false {
+            aPath = "/" + aPath
+        }
+
+        var uPath = uiPath 
+        if uPath.hasPrefix("/") == false {
+            uPath = "/" + uPath
+        }
+
+        let template = "index.stencil"
+        let swaggerUIInstallation = sourcesDirectory + "/swaggerui"
+
+        let fsLoader = FileSystemLoader(paths: [Path(swaggerUIInstallation)])
+        let environment = Environment(loader: fsLoader)
+
+        let context = ["openapi": aPath]
+        if let rendered = try? environment.renderTemplate(name: template, context: context) {
+            let indexPath = "file://" + swaggerUIInstallation + "/index.html"
+            if let indexLocation = URL(string: indexPath) {
+                do {
+                    try rendered.write(to: indexLocation, atomically: true, encoding: .utf8)
+                } catch {
+                    Log.error("Could not write \(indexPath)")
+                    return
+                }
+            }
+        } else {
+            Log.error("Could not render \(template)")
+            Log.info(" Cannot show the SwaggerUI at \(uiPath)")
+            return
+        }
+
+        router.all(uPath, middleware: StaticFileServer(path: swaggerUIInstallation))
+        Log.info("Registered SwaggerUI on \(uiPath)")
     }
 }
