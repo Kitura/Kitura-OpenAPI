@@ -14,13 +14,14 @@ let package = Package(
         .package(url: "https://github.com/IBM-Swift/Kitura.git", from: "2.4.0"),
         .package(url: "https://github.com/IBM-Swift/Swift-cfenv.git", from: "6.0.0"),
         .package(url: "https://github.com/IBM-Swift/LoggerAPI.git", from: "1.7.3"),
+        .package(url: "https://github.com/IBM-Swift/Kitura-StencilTemplateEngine.git", from: "1.10.0"),
     ],
     targets: [
         .target(
             name: "KituraOpenAPI",
-            dependencies: ["Kitura", "CloudFoundryEnv", "LoggerAPI"]),
+            dependencies: ["Kitura", "KituraStencil", "CloudFoundryEnv", "LoggerAPI"]),
         .testTarget(
             name: "KituraOpenAPITests",
-            dependencies: ["KituraOpenAPI"]),
+            dependencies: ["KituraOpenAPI", "Kitura"]),
     ]
 )
