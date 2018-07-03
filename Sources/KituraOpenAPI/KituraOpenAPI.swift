@@ -88,30 +88,26 @@ public class KituraOpenAPI {
             uPath = "/" + uPath
         }
 
+        let installationRoute = uPath.hasSuffix("/") ? uPath + "assets" : uPath + "/assets"
         let template = "index.stencil"
         let swaggerUIInstallation = sourcesDirectory + "/swaggerui"
 
         let fsLoader = FileSystemLoader(paths: [Path(swaggerUIInstallation)])
         let environment = Environment(loader: fsLoader)
 
-        let context = ["openapi": aPath]
+        let context = ["openapi": aPath, "installation": installationRoute]
+
         if let rendered = try? environment.renderTemplate(name: template, context: context) {
-            let indexPath = "file://" + swaggerUIInstallation + "/index.html"
-            if let indexLocation = URL(string: indexPath) {
-                do {
-                    try rendered.write(to: indexLocation, atomically: true, encoding: .utf8)
-                } catch {
-                    Log.error("Could not write \(indexPath)")
-                    return
-                }
+            router.get(uPath) { request, response, next in
+                response.send(String(describing: rendered))
+                next()
             }
+            Log.info("Registered SwaggerUI on \(uiPath)")
         } else {
             Log.error("Could not render \(template)")
             Log.info(" Cannot show the SwaggerUI at \(uiPath)")
             return
         }
-
-        router.all(uPath, middleware: StaticFileServer(path: swaggerUIInstallation))
-        Log.info("Registered SwaggerUI on \(uiPath)")
+        router.get(installationRoute, middleware: StaticFileServer(path: swaggerUIInstallation))
     }
 }
