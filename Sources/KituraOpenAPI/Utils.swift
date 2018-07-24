@@ -60,7 +60,7 @@ internal struct Utils {
     do {
       let dirContents = try fm.contentsOfDirectory(atPath: fm.currentDirectoryPath)
       for dir in dirContents {
-        if dir.contains("KituraOpenAPI") {
+        if dir.contains("Kitura-OpenAPI") {
           Log.verbose("Found Kitura-OpenAPI package directory")
           _ = fm.changeCurrentDirectoryPath(dir)
         }
@@ -68,7 +68,7 @@ internal struct Utils {
     } catch {
       Log.error("Error obtaining contents of directory: \(fm.currentDirectoryPath), \(error).")
     }
-
+    
     let packagePath = "\(fm.currentDirectoryPath)/Package.swift"
     if fm.fileExists(atPath: packagePath) {
       Log.verbose("Found Package.swift, returning \(fm.currentDirectoryPath)")
