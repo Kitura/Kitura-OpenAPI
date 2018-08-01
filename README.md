@@ -22,8 +22,6 @@
 
 # Kitura-OpenAPI
 
-## Summary
-
 Kitura-OpenAPI is a library which makes it easy to add [OpenAPI](https://www.openapis.org/) (aka Swagger) support to your Codable routing-based [Kitura](https://github.com/IBM-Swift/Kitura) application.
 
 By using Kitura-OpenAPI you can:
