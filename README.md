@@ -31,9 +31,18 @@ By using Kitura-OpenAPI you can:
 
 ## Getting Started
 
-Add Kitura-OpenAPI as a dependency to your Kitura application's `Package.swift` file.
+Add `Kitura-OpenAPI` to the dependencies within your application's `Package.swift` file. Substitute `"x.x.x"` with the latest `Kitura-OpenAPI` [release](https://github.com/IBM-Swift/Kitura-OpenAPI/releases).
 
-Then import the package inside your application:
+```swift
+.package(url: "https://github.com/IBM-Swift/Kitura-OpenAPI.git", from: "x.x.x")
+```
+Add `KituraOpenAPI` to your target's dependencies:
+
+```Swift
+.target(name: "example", dependencies: ["KituraOpenAPI"]),
+```
+
+Import the package inside your application:
 
 ```swift
 import KituraOpenAPI
@@ -51,13 +60,6 @@ KituraOpenAPI.addEndpoints(to: router) // Use the default endpoints
 
 You can then visit `/openapi` in a web browser to view the generated OpenAPI definition, and `/openapi/ui` to view SwaggerUI.
 
-If you wish, you can customize the endpoint paths:
-
-```swift
-let config = KituraOpenAPIConfig(apiPath: "/swagger", swaggerUIPath: "/swagger/ui")
-KituraOpenAPI.addEndpoints(to: router, with: config)
-```
-
 ## More information
 
 Kitura-OpenAPI works by using Kitura's ability to introspect the registered Codable routes at runtime. This feature was added in Kitura 2.4. Hence, if you are not using Codable routing you unfortunately cannot take advantage of this feature. This is because only Codable routes provide the strong type information required in order to generate an OpenAPI definition at runtime.
@@ -68,4 +70,4 @@ We love to talk server-side Swift and Kitura. Join our [Slack](http://swift-at-i
 
 ## License
 
-This library is licensed under Apache 2.0. Full license text is available in [LICENSE](https://github.com/IBM-Swift/Kitura-OpenAPI/blob/master/LICENSE)
+This library is licensed under Apache 2.0. Full license text is available in [LICENSE](https://github.com/IBM-Swift/Kitura-OpenAPI/blob/master/LICENSE).
