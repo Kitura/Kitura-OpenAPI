@@ -31,9 +31,18 @@ By using Kitura-OpenAPI you can:
 
 ## Getting Started
 
-Add Kitura-OpenAPI as a dependency to your Kitura application's `Package.swift` file.
+Add `Kitura-OpenAPI` to the dependencies within your application's `Package.swift` file. Substitute `"x.x.x"` with the latest `Kitura-OpenAPI` [release](https://github.com/IBM-Swift/Kitura-OpenAPI/releases).
 
-Then import the package inside your application:
+```swift
+.package(url: "https://github.com/IBM-Swift/Kitura-OpenAPI.git", from: "x.x.x")
+```
+Add `KituraOpenAPI` to your target's dependencies:
+
+```Swift
+.target(name: "example", dependencies: ["KituraOpenAPI"]),
+```
+
+Import the package inside your application:
 
 ```swift
 import KituraOpenAPI
@@ -68,4 +77,4 @@ We love to talk server-side Swift and Kitura. Join our [Slack](http://swift-at-i
 
 ## License
 
-This library is licensed under Apache 2.0. Full license text is available in [LICENSE](https://github.com/IBM-Swift/Kitura-OpenAPI/blob/master/LICENSE)
+This library is licensed under Apache 2.0. Full license text is available in [LICENSE](https://github.com/IBM-Swift/Kitura-OpenAPI/blob/master/LICENSE).
