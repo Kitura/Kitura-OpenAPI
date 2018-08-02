@@ -60,13 +60,6 @@ KituraOpenAPI.addEndpoints(to: router) // Use the default endpoints
 
 You can then visit `/openapi` in a web browser to view the generated OpenAPI definition, and `/openapi/ui` to view SwaggerUI.
 
-If you wish, you can customize the endpoint paths:
-
-```swift
-let config = KituraOpenAPIConfig(apiPath: "/swagger", swaggerUIPath: "/swagger/ui")
-KituraOpenAPI.addEndpoints(to: router, with: config)
-```
-
 ## More information
 
 Kitura-OpenAPI works by using Kitura's ability to introspect the registered Codable routes at runtime. This feature was added in Kitura 2.4. Hence, if you are not using Codable routing you unfortunately cannot take advantage of this feature. This is because only Codable routes provide the strong type information required in order to generate an OpenAPI definition at runtime.
