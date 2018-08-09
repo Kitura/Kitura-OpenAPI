@@ -1,0 +1,5 @@
+This repository includes components from Swagger-UI under the /swaggerui directory.
+A copy of the license is available in swaggerui/LICENSE
+
+Some parts of Swagger-UI have been modified as described in https://github.com/IBM-Swift/swagger-ui/tree/kitura/README.md
+Modifications are Copyright IBM Corporation 2018.

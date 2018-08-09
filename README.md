@@ -70,4 +70,6 @@ We love to talk server-side Swift and Kitura. Join our [Slack](http://swift-at-i
 
 ## License
 
-This library is licensed under Apache 2.0. Full license text is available in [LICENSE](https://github.com/IBM-Swift/Kitura-OpenAPI/blob/master/LICENSE).
+This library is licensed under Apache 2.0. Full license text is available in [LICENSE](https://github.com/IBM-Swift/Kitura-OpenAPI/blob/master/LICENSE)
+
+This library includes components from [Swagger-UI](https://github.com/swagger-api/swagger-ui), which is licensed under Apache 2.0. Full license text is available in [swagger-ui/LICENSE](https://github.com/swagger-api/swagger-ui/blob/master/LICENSE)
