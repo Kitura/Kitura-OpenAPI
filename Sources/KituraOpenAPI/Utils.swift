@@ -41,7 +41,7 @@ internal struct Utils {
         applicationPath = String(workingPath[..<i.lowerBound])
         Log.verbose("applicationPath=\(applicationPath)")
       } else {
-        Log.error("Error finding .build directory")
+        Log.verbose("Error finding .build directory")
       }
     } else {
       // We're in Bluemix, use the path the swift-buildpack saves libraries to
@@ -54,7 +54,7 @@ internal struct Utils {
       Log.verbose("checkoutsPath=\(checkoutsPath)")
       _ = fm.changeCurrentDirectoryPath(checkoutsPath)
     } else {
-      Log.error("Error finding .build/checkouts directory")
+      Log.verbose("Error finding .build/checkouts directory")
     }
     
     do {
