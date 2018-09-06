@@ -42,6 +42,11 @@ Add `KituraOpenAPI` to your target's dependencies:
 .target(name: "example", dependencies: ["KituraOpenAPI"]),
 ```
 
+Update your dependencies by running:
+```
+swift package update
+```
+
 Import the package inside your application:
 
 ```swift
