@@ -54,7 +54,7 @@ public class KituraOpenAPI {
                 return
             }
 
-            response.headers.setType("application/json")
+            response.headers.setType("json")
             response.status(.OK)
             try response.send(json).end()
         }
