@@ -34,7 +34,23 @@ final class KituraOpenAPITests: KituraTest {
         ("testCustomAPIPath", testCustomAPIPath),
         ("testCustomSwaggerUIPath", testCustomSwaggerUIPath),
     ]
-
+    
+    override class func tearDown() {
+        guard var sourcesDirectory = Utils.localSourceDirectory else {
+            XCTFail("Could not locate local source directory")
+            return
+        }
+        
+        sourcesDirectory += "/swaggerui/index.html"
+        let fileURL = URL(fileURLWithPath: sourcesDirectory)
+        do {
+            try "".write(to: fileURL, atomically: true, encoding: .utf8)
+        } catch {
+            XCTFail(error.localizedDescription)
+        }
+        
+    }
+    
     func testDefaultAPIPath() {
         let router = Router()
         KituraOpenAPI.addEndpoints(to: router)
@@ -69,6 +85,7 @@ final class KituraOpenAPITests: KituraTest {
                 if let response = response {
                     if let wrappedhtml = try? response.readString() {
                         if let html = wrappedhtml {
+                            print(html)
                             XCTAssertTrue(html.contains("<title>Kitura Swagger UI</title>"), "Kitura swagger ui was not served.")
                             XCTAssertTrue(html.contains("url: \"/openapi\","), "Kitura swagger ui data source is incorrect")
                         }
