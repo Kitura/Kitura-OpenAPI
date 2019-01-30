@@ -43,8 +43,9 @@ final class KituraOpenAPITests: KituraTest {
         
         sourcesDirectory += "/swaggerui/index.html"
         let fileURL = URL(fileURLWithPath: sourcesDirectory)
+        let fm = FileManager.default
         do {
-            try "".write(to: fileURL, atomically: true, encoding: .utf8)
+           try fm.removeItem(at: fileURL)
         } catch {
             XCTFail(error.localizedDescription)
         }
@@ -85,7 +86,6 @@ final class KituraOpenAPITests: KituraTest {
                 if let response = response {
                     if let wrappedhtml = try? response.readString() {
                         if let html = wrappedhtml {
-                            print(html)
                             XCTAssertTrue(html.contains("<title>Kitura Swagger UI</title>"), "Kitura swagger ui was not served.")
                             XCTAssertTrue(html.contains("url: \"/openapi\","), "Kitura swagger ui data source is incorrect")
                         }

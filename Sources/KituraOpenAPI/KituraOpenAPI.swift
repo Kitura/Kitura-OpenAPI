@@ -20,7 +20,6 @@ import Foundation
 
 public class KituraOpenAPI {
     public static var defaultConfig = KituraOpenAPIConfig(apiPath: "/openapi", swaggerUIPath: "/openapi/ui")
-    
     public static func addEndpoints(to router: Router, with config: KituraOpenAPIConfig = KituraOpenAPI.defaultConfig) {
         Log.verbose("Registering OpenAPI endpoints")
 
