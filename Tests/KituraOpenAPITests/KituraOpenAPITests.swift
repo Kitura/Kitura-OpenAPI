@@ -34,7 +34,24 @@ final class KituraOpenAPITests: KituraTest {
         ("testCustomAPIPath", testCustomAPIPath),
         ("testCustomSwaggerUIPath", testCustomSwaggerUIPath),
     ]
-
+    
+    override class func tearDown() {
+        guard var sourcesDirectory = Utils.localSourceDirectory else {
+            XCTFail("Could not locate local source directory")
+            return
+        }
+        
+        sourcesDirectory += "/swaggerui/index.html"
+        let fileURL = URL(fileURLWithPath: sourcesDirectory)
+        let fm = FileManager.default
+        do {
+           try fm.removeItem(at: fileURL)
+        } catch {
+            XCTFail(error.localizedDescription)
+        }
+        
+    }
+    
     func testDefaultAPIPath() {
         let router = Router()
         KituraOpenAPI.addEndpoints(to: router)
