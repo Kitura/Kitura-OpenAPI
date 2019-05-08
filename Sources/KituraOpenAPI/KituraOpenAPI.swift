@@ -59,6 +59,15 @@ public class KituraOpenAPI {
         Log.info("Registered OpenAPI definition on \(path)")
     }
 
+    public static func writeOpenAPI(from router: Router, to filePath: String) {
+        let swaggerJson = router.swaggerJSON
+        do {
+            try swaggerJson?.write(toFile: filePath, atomically: true, encoding: .utf8)
+        } catch {
+            Log.error(error.localizedDescription)
+        }
+    }
+
     private static func addSwaggerUI(to router: Router, with config: KituraOpenAPIConfig) {
         guard let uiPath = config.swaggerUIPath else {
             Log.verbose("No path for SwaggerUI")

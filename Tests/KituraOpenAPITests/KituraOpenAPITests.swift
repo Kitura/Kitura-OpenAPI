@@ -33,6 +33,7 @@ final class KituraOpenAPITests: KituraTest {
         ("testDefaultSwaggerUIPath", testDefaultSwaggerUIPath),
         ("testCustomAPIPath", testCustomAPIPath),
         ("testCustomSwaggerUIPath", testCustomSwaggerUIPath),
+        ("testSwaggerToDisk", testSwaggerToDisk),
     ]
     
     override class func tearDown() {
@@ -118,7 +119,6 @@ final class KituraOpenAPITests: KituraTest {
         let router = Router()
         let config = KituraOpenAPIConfig(apiPath: "cheese", swaggerUIPath: "toasty")
         KituraOpenAPI.addEndpoints(to: router, with: config)
-
         router.get("/me/pear", handler: getPearHandler)
 
         performServerTest(router, sslOption: .httpOnly) { expectation in
@@ -132,5 +132,18 @@ final class KituraOpenAPITests: KituraTest {
                 expectation.fulfill()
             })
         }
+    }
+
+    func testSwaggerToDisk() {
+        let router = Router()
+        let config = KituraOpenAPIConfig(apiPath: "cheese", swaggerUIPath: "toasty")
+        KituraOpenAPI.addEndpoints(to: router, with: config)
+        router.get("/me/pear", handler: getPearHandler)
+        KituraOpenAPI.writeOpenAPI(from: router, to: "/tmp/swagger.json")
+        performServerTest(router, sslOption: .httpOnly) { expectation in
+            let fileManager = FileManager.default
+            XCTAssertTrue(fileManager.fileExists(atPath: "/tmp/swagger.json"))
+            expectation.fulfill()
+            }
     }
 }
