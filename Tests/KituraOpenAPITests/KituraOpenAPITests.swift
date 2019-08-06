@@ -34,6 +34,7 @@ final class KituraOpenAPITests: KituraTest {
         ("testCustomAPIPath", testCustomAPIPath),
         ("testCustomSwaggerUIPath", testCustomSwaggerUIPath),
         ("testSwaggerToDisk", testSwaggerToDisk),
+        ("testSwaggerToBadPath", testSwaggerToBadPath),
     ]
     
     override class func tearDown() {
@@ -135,15 +136,33 @@ final class KituraOpenAPITests: KituraTest {
     }
 
     func testSwaggerToDisk() {
+        let goodPath = "/tmp/swagger.json"
         let router = Router()
         let config = KituraOpenAPIConfig(apiPath: "cheese", swaggerUIPath: "toasty")
         KituraOpenAPI.addEndpoints(to: router, with: config)
         router.get("/me/pear", handler: getPearHandler)
-        KituraOpenAPI.writeOpenAPI(from: router, to: "/tmp/swagger.json")
-        performServerTest(router, sslOption: .httpOnly) { expectation in
+        do {
+            try KituraOpenAPI.writeOpenAPI(from: router, to: goodPath)
             let fileManager = FileManager.default
-            XCTAssertTrue(fileManager.fileExists(atPath: "/tmp/swagger.json"))
-            expectation.fulfill()
-            }
+            XCTAssertTrue(fileManager.fileExists(atPath: goodPath))
+        } catch {
+            XCTFail("Failed to write file: \(error.localizedDescription)")
+        }
+    }
+
+    func testSwaggerToBadPath() {
+        let badPath = "/does/not/exist"
+        let router = Router()
+        let config = KituraOpenAPIConfig(apiPath: "cheese", swaggerUIPath: "toasty")
+        KituraOpenAPI.addEndpoints(to: router, with: config)
+        router.get("/me/pear", handler: getPearHandler)
+        do {
+            try KituraOpenAPI.writeOpenAPI(from: router, to: badPath)
+            XCTFail("Unexpectedly succeeded writing to \(badPath)")
+            let fileManager = FileManager.default
+            XCTAssertFalse(fileManager.fileExists(atPath: badPath))
+        } catch {
+            // Expected case - file could not be written to a nonexistent path
+        }
     }
 }

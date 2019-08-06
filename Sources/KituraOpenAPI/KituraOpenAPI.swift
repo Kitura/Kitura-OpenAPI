@@ -19,7 +19,15 @@ import LoggerAPI
 import Foundation
 
 public class KituraOpenAPI {
+    /// The default endpoints registered by `KituraOpenAPI.addEndpoints` to serve the
+    /// OpenAPI definition and the SwaggerUI tool. These values are `/openapi` and
+    /// `openapi/ui`, respectively.
     public static var defaultConfig = KituraOpenAPIConfig(apiPath: "/openapi", swaggerUIPath: "/openapi/ui")
+
+    /// Add endpoints to a Kitura `Router`, to serve the OpenAPI document and SwaggerUI.
+    /// - Parameter router: The `Router` whose routes should be described.
+    /// - Parameter config: Optionally specify the paths to register. If not specified,
+    ///                     the values described in `defaultConfig` will be used.
     public static func addEndpoints(to router: Router, with config: KituraOpenAPIConfig = KituraOpenAPI.defaultConfig) {
         Log.verbose("Registering OpenAPI endpoints")
 
@@ -28,6 +36,16 @@ public class KituraOpenAPI {
 
         // Register SwaggerUI serving
         addSwaggerUI(to: router, with: config)
+    }
+
+    /// Write Kitura's OpenAPI definition to a file, describing all Codable routes that have
+    /// been registered with the given `Router`.
+    /// - Parameter router: The Router whose routes should be described.
+    /// - Parameter filePath: The path to a file that should be written.
+    /// - Throws: NSError if the file cannot be written.
+    public static func writeOpenAPI(from router: Router, to filePath: String) throws {
+        let swaggerJson = router.swaggerJSON
+        try swaggerJson?.write(toFile: filePath, atomically: true, encoding: .utf8)
     }
 
     private static func addOpenAPI(to router: Router, with config: KituraOpenAPIConfig) {
@@ -57,15 +75,6 @@ public class KituraOpenAPI {
         }
             
         Log.info("Registered OpenAPI definition on \(path)")
-    }
-
-    public static func writeOpenAPI(from router: Router, to filePath: String) {
-        let swaggerJson = router.swaggerJSON
-        do {
-            try swaggerJson?.write(toFile: filePath, atomically: true, encoding: .utf8)
-        } catch {
-            Log.error(error.localizedDescription)
-        }
     }
 
     private static func addSwaggerUI(to router: Router, with config: KituraOpenAPIConfig) {
