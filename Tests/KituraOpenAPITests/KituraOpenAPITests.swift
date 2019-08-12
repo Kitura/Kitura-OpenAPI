@@ -33,6 +33,8 @@ final class KituraOpenAPITests: KituraTest {
         ("testDefaultSwaggerUIPath", testDefaultSwaggerUIPath),
         ("testCustomAPIPath", testCustomAPIPath),
         ("testCustomSwaggerUIPath", testCustomSwaggerUIPath),
+        ("testSwaggerToDisk", testSwaggerToDisk),
+        ("testSwaggerToBadPath", testSwaggerToBadPath),
     ]
     
     override class func tearDown() {
@@ -118,7 +120,6 @@ final class KituraOpenAPITests: KituraTest {
         let router = Router()
         let config = KituraOpenAPIConfig(apiPath: "cheese", swaggerUIPath: "toasty")
         KituraOpenAPI.addEndpoints(to: router, with: config)
-
         router.get("/me/pear", handler: getPearHandler)
 
         performServerTest(router, sslOption: .httpOnly) { expectation in
@@ -131,6 +132,37 @@ final class KituraOpenAPITests: KituraTest {
                 }
                 expectation.fulfill()
             })
+        }
+    }
+
+    func testSwaggerToDisk() {
+        let goodPath = "/tmp/swagger.json"
+        let router = Router()
+        let config = KituraOpenAPIConfig(apiPath: "cheese", swaggerUIPath: "toasty")
+        KituraOpenAPI.addEndpoints(to: router, with: config)
+        router.get("/me/pear", handler: getPearHandler)
+        do {
+            try KituraOpenAPI.writeOpenAPI(from: router, to: goodPath)
+            let fileManager = FileManager.default
+            XCTAssertTrue(fileManager.fileExists(atPath: goodPath))
+        } catch {
+            XCTFail("Failed to write file: \(error.localizedDescription)")
+        }
+    }
+
+    func testSwaggerToBadPath() {
+        let badPath = "/does/not/exist"
+        let router = Router()
+        let config = KituraOpenAPIConfig(apiPath: "cheese", swaggerUIPath: "toasty")
+        KituraOpenAPI.addEndpoints(to: router, with: config)
+        router.get("/me/pear", handler: getPearHandler)
+        do {
+            try KituraOpenAPI.writeOpenAPI(from: router, to: badPath)
+            XCTFail("Unexpectedly succeeded writing to \(badPath)")
+            let fileManager = FileManager.default
+            XCTAssertFalse(fileManager.fileExists(atPath: badPath))
+        } catch {
+            // Expected case - file could not be written to a nonexistent path
         }
     }
 }
