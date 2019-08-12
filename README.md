@@ -74,9 +74,9 @@ You can easily write the OpenAPI definition for your Kitura router to a file:
 try KituraOpenAPI.writeOpenAPI(from: router, to: "/myProject/kitura-server.json")
 ```
 
-## More information
+## Limitations
 
-Kitura-OpenAPI works by using Kitura's ability to introspect the registered Codable routes at runtime. This feature was added in Kitura 2.4. Hence, if you are not using Codable routing you unfortunately cannot take advantage of this feature. This is because only Codable routes provide the strong type information required in order to generate an OpenAPI definition at runtime.
+Kitura-OpenAPI works by using Kitura's ability to introspect the registered Codable routes at runtime, a feature added in Kitura 2.4. Because Codable routes provide the strong type information required in order to generate an OpenAPI definition at runtime, this feature unfortunately cannot currently support 'raw' routes.
 
 ## Community
 
