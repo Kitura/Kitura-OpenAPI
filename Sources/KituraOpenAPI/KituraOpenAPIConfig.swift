@@ -14,14 +14,18 @@
  * limitations under the License.
  */
 
+/// Defines the endpoints for the OpenAPI document and SwaggerUI tool when used
+/// in conjunction with `KituraOpenAPI.addEndpoints(to:with:)`.
 public struct KituraOpenAPIConfig {
-    // Path to serve OpenAPI specification from. If nil, do not serve.
+    /// Path to serve OpenAPI specification from. If nil, do not serve.
     public let apiPath: String?
 
-    // Path to serve SwaggerUI from. If nil, do not serve.
+    /// Path to serve SwaggerUI from. If nil, do not serve.
     public let swaggerUIPath: String?
     
-    // Create KituraOpenAPIConfig
+    /// Create a `KituraOpenAPIConfig` with custom endpoints.
+    /// - Parameter apiPath: Path to serve OpenAPI specification from. If nil, do not serve.
+    /// - Parameter swaggerUIPath: Path to serve SwaggerUI from. If nil, do not serve.
     public init(apiPath: String?, swaggerUIPath: String?) {
         self.apiPath = apiPath
         self.swaggerUIPath = swaggerUIPath

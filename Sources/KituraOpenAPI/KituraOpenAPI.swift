@@ -18,6 +18,29 @@ import Kitura
 import LoggerAPI
 import Foundation
 
+/// KituraOpenAPI contains helper functions for the addition of endpoints to a Kitura `Router`
+/// for serving:
+/// - an OpenAPI definition of its routes and their associated data types,
+/// - the [SwaggerUI](https://swagger.io/tools/swagger-ui/) tool, that allows exploration and
+///   testing of the API via a web browser.
+///
+/// Usage Example:
+///
+/// ```swift
+/// import Kitura
+/// import KituraOpenAPI
+///
+/// let router = Router()
+/// KituraOpenAPI.addEndpoints(to: router)   // Register default endpoints
+/// ```
+///
+/// The endpoints have default values defined by the `defaultConfig` property. You can customize
+/// the endpoints by supplying a `KituraOpenAPIConfig`:
+///
+/// ```swift
+/// let config = KituraOpenAPIConfig(apiPath: "/swagger", swaggerUIPath: "/swagger/ui")
+/// KituraOpenAPI.addEndpoints(to: router, with: config)
+/// ```
 public class KituraOpenAPI {
     /// The default endpoints registered by `KituraOpenAPI.addEndpoints` to serve the
     /// OpenAPI definition and the SwaggerUI tool. These values are `/openapi` and
