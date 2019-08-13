@@ -1,0 +1,40 @@
+{
+  "warnings": [
+    {
+      "file": "/Users/travis/build/IBM-Swift/Kitura-OpenAPI/Sources/KituraOpenAPI/KituraOpenAPI.swift",
+      "line": 21,
+      "symbol": "KituraOpenAPI",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/travis/build/IBM-Swift/Kitura-OpenAPI/Sources/KituraOpenAPI/KituraOpenAPIConfig.swift",
+      "line": 17,
+      "symbol": "KituraOpenAPIConfig",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/travis/build/IBM-Swift/Kitura-OpenAPI/Sources/KituraOpenAPI/KituraOpenAPIConfig.swift",
+      "line": 19,
+      "symbol": "KituraOpenAPIConfig.apiPath",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/travis/build/IBM-Swift/Kitura-OpenAPI/Sources/KituraOpenAPI/KituraOpenAPIConfig.swift",
+      "line": 22,
+      "symbol": "KituraOpenAPIConfig.swaggerUIPath",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/travis/build/IBM-Swift/Kitura-OpenAPI/Sources/KituraOpenAPI/KituraOpenAPIConfig.swift",
+      "line": 25,
+      "symbol": "KituraOpenAPIConfig.init(apiPath:swaggerUIPath:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    }
+  ],
+  "source_directory": "/Users/travis/build/IBM-Swift/Kitura-OpenAPI"
+}
