@@ -12,4 +12,4 @@ readme: README.md
 skip_undocumented: false
 hide_documentation_coverage: false
 
-xcodebuild_arguments: [-project, Kitura-OpenAPI.xcodeproj, -target, KituraOpenAPI, LIBRARY_SEARCH_PATHS=.build/debug]
+xcodebuild_arguments: [-project, KituraOpenAPI.xcodeproj, -target, KituraOpenAPI, LIBRARY_SEARCH_PATHS=.build/debug]
