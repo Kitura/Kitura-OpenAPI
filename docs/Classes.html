@@ -23,7 +23,7 @@
         <a class="header-link" href="index.html">
           KituraOpenAPI Docs
         </a>
-         (37% documented)
+         (100% documented)
       </p>
     
       <p class="header-col--secondary">
@@ -95,7 +95,28 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>KituraOpenAPI contains helper functions for the addition of endpoints to a Kitura <code>Router</code>
+for serving:</p>
+
+<ul>
+<li>an OpenAPI definition of its routes and their associated data types,</li>
+<li>the <a href="https://swagger.io/tools/swagger-ui/">SwaggerUI</a> tool, that allows exploration and
+testing of the API via a web browser.</li>
+</ul>
+
+<p>Usage Example:</p>
+<pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">Kitura</span>
+<span class="kd">import</span> <span class="kt">KituraOpenAPI</span>
+
+<span class="k">let</span> <span class="nv">router</span> <span class="o">=</span> <span class="kt">Router</span><span class="p">()</span>
+<span class="kt">KituraOpenAPI</span><span class="o">.</span><span class="nf">addEndpoints</span><span class="p">(</span><span class="nv">to</span><span class="p">:</span> <span class="n">router</span><span class="p">)</span>   <span class="c1">// Register default endpoints</span>
+</code></pre>
+
+<p>The endpoints have default values defined by the <code>defaultConfig</code> property. You can customize
+the endpoints by supplying a <code><a href="Structs/KituraOpenAPIConfig.html">KituraOpenAPIConfig</a></code>:</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">config</span> <span class="o">=</span> <span class="kt">KituraOpenAPIConfig</span><span class="p">(</span><span class="nv">apiPath</span><span class="p">:</span> <span class="s">"/swagger"</span><span class="p">,</span> <span class="nv">swaggerUIPath</span><span class="p">:</span> <span class="s">"/swagger/ui"</span><span class="p">)</span>
+<span class="kt">KituraOpenAPI</span><span class="o">.</span><span class="nf">addEndpoints</span><span class="p">(</span><span class="nv">to</span><span class="p">:</span> <span class="n">router</span><span class="p">,</span> <span class="nv">with</span><span class="p">:</span> <span class="n">config</span><span class="p">)</span>
+</code></pre>
 
                         <a href="Classes/KituraOpenAPI.html" class="slightly-smaller">See more</a>
                       </div>
