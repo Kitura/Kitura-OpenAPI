@@ -11,9 +11,9 @@ let package = Package(
             targets: ["KituraOpenAPI"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/Kitura/Kitura.git", from: "2.4.0"),
-        .package(url: "https://github.com/Kitura/Swift-cfenv.git", from: "6.0.0"),
-        .package(url: "https://github.com/Kitura/LoggerAPI.git", from: "1.7.3"),
+        .package(url: "https://github.com/Kitura/Kitura.git", from: "2.9.200"),
+        .package(url: "https://github.com/Kitura/Swift-cfenv.git", from: "6.0.200"),
+        .package(url: "https://github.com/Kitura/LoggerAPI.git", from: "1.9.200"),
     ],
     targets: [
         .target(
